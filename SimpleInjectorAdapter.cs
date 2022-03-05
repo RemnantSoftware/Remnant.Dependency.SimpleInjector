@@ -30,21 +30,27 @@ namespace Remnant.Dependency.SimpleInjector
 			throw new NotSupportedException("Deregister not supported for SimpleInjector.");
 		}
 
-		public IContainer Register<TType>(TType instance) where TType : class
+		public IContainer Register(Type type, object instance)
 		{
-			_container.RegisterInstance(instance);
+			_container.RegisterInstance(type, instance);
 			return this;
 		}
 
 		public IContainer Register(object instance)
 		{
-			_container.RegisterInstance(instance);
+			_container.RegisterSingleton(() => instance);
+			return this;
+		}
+
+		public IContainer Register<TType>(object instance) where TType : class
+		{
+			_container.RegisterSingleton<TType>(() => instance as TType);
 			return this;
 		}
 
 		public IContainer Register<TType>() where TType : class, new()
 		{
-			_container.RegisterInstance(new TType());
+			_container.RegisterSingleton(() => new TType());
 			return this;
 		}
 
@@ -52,7 +58,7 @@ namespace Remnant.Dependency.SimpleInjector
 			where TType : class
 			where TObject : class, new()
 		{
-			_container.RegisterInstance<TType>(new TObject() as TType);
+			_container.RegisterSingleton<TType>(() => new TObject() as TType);
 			return this;
 		}
 
