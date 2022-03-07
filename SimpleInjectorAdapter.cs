@@ -9,10 +9,7 @@ namespace Remnant.Dependency.SimpleInjector
 
 		public SimpleInjectorAdapter(global::SimpleInjector.Container container)
 		{
-			if (container == null)
-				throw new ArgumentNullException(nameof(container));
-
-			_container = container;
+			_container = container ?? throw new ArgumentNullException(nameof(container));
 		}
 
 		public IContainer Clear()
@@ -65,6 +62,14 @@ namespace Remnant.Dependency.SimpleInjector
 		public TType ResolveInstance<TType>() where TType : class
 		{
 			return _container.GetInstance<TType>();
+		}
+
+		public TContainer InternalContainer<TContainer>() where TContainer : class
+		{
+			if (_container as TContainer == null)
+				throw new InvalidCastException($"The internal container is of type {_container.GetType().FullName} and cannot be cast to {typeof(TContainer).FullName}");
+
+			return _container as TContainer;
 		}
 	}
 }
