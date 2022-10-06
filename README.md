@@ -4,7 +4,7 @@ Simple injector dependency injection adapter
 
 ## Nuget package:
 
-        Install-Package Remnant.Dependency.SimpleInjector -Version 1.0.2
+        Install-Package Remnant.Dependency.SimpleInjector -Version 1.1.0
 
 Create container for Simple Injector
 ```csharp
